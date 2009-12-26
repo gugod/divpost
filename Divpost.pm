@@ -25,12 +25,8 @@ sub render {
 sub main {
     my ($request) = @_;
 
-    say $request->uri->path;
-
-    given($request->uri->path) {
-        when("/posts") {
-            $stash->{div_content} = $request->param("post[content]");
-        }
+    if ($request->param("action") eq "post.update") {
+        $stash->{div_content} = $request->param("post[content]");
     }
 
     send_home_page($request);

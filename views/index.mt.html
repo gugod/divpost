@@ -59,9 +59,10 @@
                 <div class="content" title="click to edit"><%= $div_content %></div>
 
                 <div class="edit">
-                    <form method="post", action="/posts">
+                    <form method="post", action="/">
                         <div>
                             <textarea name="post[content]"><%= $div_content %></textarea>
+                            <input type="hidden" name="action" value="post.update" />
                             <input type="submit" value="Save" />
                         </div>
                     </form>
