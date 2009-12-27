@@ -9,7 +9,7 @@ require Divpost;
 
 use Continuity;
 
-my $server = Continuity->new(port => 3000);
+my $server = Continuity->new(port => $ENV{APP_PORT});
 $server->loop;
 
 sub main {
