@@ -46,9 +46,9 @@
         <script type="text/javascript">
             $(function() {
                 $(".divpost .content").bind("click", function() {
-                    $(this).next(".edit").show("fast", function() {
-                        $(this).find("textarea").focus();
-                    });
+                    $(this).next(".edit").show();
+                    $(this).next(".edit").find("textarea").focus();
+                    return false;
                 });
             });
         </script>
