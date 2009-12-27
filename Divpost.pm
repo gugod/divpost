@@ -41,6 +41,8 @@ sub main {
                 created_at => DateTime::Tiny->now,
                 content => $request->param("post[content]")
             };
+
+            pop @{$stash->{posts}} if @{$stash->{posts}} > 25;
         }
 
         render("index", $stash);
