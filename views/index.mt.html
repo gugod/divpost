@@ -12,19 +12,21 @@
                 margin: 0 auto;
             }
             .divpost {
-                margin-bottom: 15px;
-            }
-            .divpost .content {
                 -moz-box-shadow: 2px 2px 5px #000;
                 -webkit-box-shadow: 2px 2px 5px #000;
 
                 width: 280px;
                 padding: 10px;
+                margin-bottom: 15px;
 
                 background: #ffc;
                 overflow: hidden;
             }
-
+            .divpost .info {
+                color: #777;
+                margin-bottom: 5px;
+                border-bottom: 1px dotted #aaa;
+            }
             #divpost\.create { 
                 display: none;
                 -moz-box-shadow: 0px 0px 15px #110;
@@ -41,9 +43,20 @@
                 margin: 10px 0;
             }
 
-            #button\:post\.create {
-                float: right;
+            #title a {
+                text-decoration: none;
+                color: #black;
             }
+
+            a#button\:post\.create {
+                float: right;
+                text-decoration: none;
+                color: #090;
+            }
+            a#button\:post\.create:hover {
+                color: #5e5;
+            }
+
             #divpost\.create {
             }
         </style>
@@ -62,9 +75,9 @@
         <div id="doc">
 
             <h1 id="title">
-                <a href="/">Divpost</a>
+                <a href="/">Div.post</a>
 
-                <a id="button:post.create" href="javascript:void(0);">Create</a>
+                <a id="button:post.create" href="javascript:void(0);">{+}</a>
             </h1>
 
             <div id="divpost.create">
@@ -78,7 +91,8 @@
             </div>
             <% for my $post (@$posts) { %>
             <div class="divpost">
-                <div class="content" title="click to edit"><%= $post->{content} %></div>
+                <div class="info"><span class="created_at"><%= $post->{created_at}->ymdhms %></span></div>
+                <div class="content"><%= $post->{content} %></div>
             </div>
             <% } %>
         </div>

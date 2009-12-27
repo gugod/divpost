@@ -1,6 +1,9 @@
 package Divpost;
 use common::sense;
 use Text::MicroTemplate::Extended;
+use DateTime::Tiny;
+use utf8;
+use encoding 'utf8';
 
 use PadWalker;
 sub request {
@@ -35,6 +38,7 @@ sub main {
     while(1) {
         if ($request->param("action") eq "post.update") {
             unshift @{$stash->{posts}}, {
+                created_at => DateTime::Tiny->now,
                 content => $request->param("post[content]")
             };
         }
