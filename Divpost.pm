@@ -1,41 +1,50 @@
 package Divpost;
 use common::sense;
-
-my $stash = {
-    div_content => ""
-};
-
 use Text::MicroTemplate::Extended;
 
-my $mt = Text::MicroTemplate::Extended->new(
-    include_path => [ 'views' ],
-    use_cache => 0,
-    tag_start => '<%',
-    tag_end   => '%>',
-    line_start => '%',
-    extension => '.mt.html',
-    template_args => $stash
-);
-
-
-sub render {
-    $mt->render_file(@_);
+use PadWalker;
+sub request {
+    my $level = 1;
+    while(1) {
+        my $vars = PadWalker::peek_my($level);
+        if ($vars->{'$request'}) {
+            return ${$vars->{'$request'}}
+        }
+        $level++;
+    }
 }
 
 sub main {
     my ($request) = @_;
 
-    if ($request->param("action") eq "post.update") {
-        $stash->{div_content} = $request->param("post[content]");
-    }
+    my $stash = {
+        div_content => ""
+    };
 
-    send_home_page($request);
+    while(1) {
+        if ($request->param("action") eq "post.update") {
+            $stash->{div_content} = $request->param("post[content]");
+        }
+
+        render("index", $stash);
+    }
 }
 
-sub send_home_page {
-    my ($request) = @_;
+sub render {
+    my ($template, $args) = @_;
 
-    $request->print(render("index"))
+    my $mt = Text::MicroTemplate::Extended->new(
+        include_path => [ 'views' ],
+        use_cache => 0,
+        tag_start => '<%',
+        tag_end   => '%>',
+        line_start => '%',
+        extension => '.mt.html',
+        template_args => $args
+    );
+
+    request->print($mt->render_file($template));
+    request->next;
 }
 
 1;
