@@ -14,16 +14,29 @@ sub request {
     }
 }
 
+
+my $stash = {
+    posts => []
+};
+
+my $mt = Text::MicroTemplate::Extended->new(
+    include_path => [ 'views' ],
+    use_cache => 0,
+    tag_start => '<%',
+    tag_end   => '%>',
+    line_start => '%',
+    extension => '.mt.html',
+);
+
+
 sub main {
     my ($request) = @_;
 
-    my $stash = {
-        div_content => ""
-    };
-
     while(1) {
         if ($request->param("action") eq "post.update") {
-            $stash->{div_content} = $request->param("post[content]");
+            unshift @{$stash->{posts}}, {
+                content => $request->param("post[content]")
+            };
         }
 
         render("index", $stash);
@@ -33,15 +46,7 @@ sub main {
 sub render {
     my ($template, $args) = @_;
 
-    my $mt = Text::MicroTemplate::Extended->new(
-        include_path => [ 'views' ],
-        use_cache => 0,
-        tag_start => '<%',
-        tag_end   => '%>',
-        line_start => '%',
-        extension => '.mt.html',
-        template_args => $args
-    );
+    $mt->template_args($args);
 
     request->print($mt->render_file($template));
     request->next;

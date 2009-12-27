@@ -11,43 +11,48 @@
                 width: 300px;
                 margin: 0 auto;
             }
+            .divpost {
+                margin-bottom: 15px;
+            }
             .divpost .content {
-                -moz-box-shadow: 0px 0px 15px #000;
+                -moz-box-shadow: 2px 2px 5px #000;
+                -webkit-box-shadow: 2px 2px 5px #000;
 
                 width: 280px;
-                height: 150px;
                 padding: 10px;
 
-                background: #eee;
-                overflow: hidden;
-                white-space: pre;
-            }
-            .divpost .content:hover {
                 background: #ffc;
+                overflow: hidden;
             }
-            .divpost .edit { 
+
+            #divpost\.create { 
                 display: none;
                 -moz-box-shadow: 0px 0px 15px #110;
                 background: #ff9;
-                margin-top: -170px;
                 padding: 10px;
                 width: 280px;
+                margin-bottom: 30px;
             }
-            .divpost .edit textarea { 
-                width: 260px;
+            #divpost\.create textarea {
+                width: 270px;
                 height: 150px;
             }
-            .divpost .edit input { 
+            #divpost\.create input {
                 margin: 10px 0;
+            }
+
+            #button\:post\.create {
+                float: right;
+            }
+            #divpost\.create {
             }
         </style>
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
         <script type="text/javascript">
             $(function() {
-                $(".divpost .content").bind("click", function() {
-                    $(this).next(".edit").show();
-                    $(this).next(".edit").find("textarea").focus();
+                $("#button\\\:post\\\.create").bind("click", function() {
+                    $("#divpost\\.create").show().find("textarea").focus();
                     return false;
                 });
             });
@@ -56,21 +61,26 @@
     <body>
         <div id="doc">
 
-            <h1 id="title"><a href="/">Divpost</a></h1>
-            <div class="divpost">
-                <div class="content" title="click to edit"><%= $div_content %></div>
+            <h1 id="title">
+                <a href="/">Divpost</a>
 
-                <div class="edit">
-                    <form method="post", action="/">
-                        <div>
-                            <textarea name="post[content]"><%= $div_content %></textarea>
-                            <input type="hidden" name="action" value="post.update" />
-                            <input type="submit" value="Save" />
-                        </div>
-                    </form>
-                </div>
+                <a id="button:post.create" href="javascript:void(0);">Create</a>
+            </h1>
+
+            <div id="divpost.create">
+                <form method="post", action="/">
+                    <div>
+                        <textarea name="post[content]"></textarea>
+                        <input type="hidden" name="action" value="post.update" />
+                        <input type="submit" value="Save" />
+                    </div>
+                </form>
             </div>
-
+            <% for my $post (@$posts) { %>
+            <div class="divpost">
+                <div class="content" title="click to edit"><%= $post->{content} %></div>
+            </div>
+            <% } %>
         </div>
     </body>
 </html>
